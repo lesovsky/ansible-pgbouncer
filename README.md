@@ -1,17 +1,17 @@
 ### README: install-pgbouncer
 
-Features:
+#### Features:
 - supported distributions: Redhat 6, CentOS 6, Scientific Linux 6, Oracle Linux.
 - allow specify pools, allowed users and other pgbouncer settings.
 - supported only md5, any or trust auth types.
 - add logrotate config
 
-Known issues:
+#### Known issues:
 - plain and crypt auth types does not implemented and not tested.
 
-Todo:
+#### Todo:
 
-How-to use:
+#### How-to use:
 - download repo with git clone;
 - cd into role directory;
 - change hosts: variable in role.yml;
