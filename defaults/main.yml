@@ -1,0 +1,32 @@
+# file: role/install-pgbouncer/defaults/main.yml
+
+# Basic settings
+pgbouncer_ini: /etc/pgbouncer/pgbouncer.ini
+pgbouncer_pool_mode: transaction
+enable_logrotate: yes
+
+# Pools
+pgbouncer_pools:
+  - { name: "db1", conninfo: "host=127.0.0.1 port=5432 user=johndoe password=test1234" }
+
+# Internal user management
+pgbouncer_admin_user: pgbouncer
+pgbouncer_admin_group: postgres
+pgbouncer_stats_users:
+ - zabbix
+ - munin
+
+# PostgreSQL users which allowed connecting to the pools
+pgbouncer_allowed_users:
+ - johndoe
+ - vpupkin
+
+# pgbouncer.ini settings
+pgbouncer_logfile: /var/log/pgbouncer.log
+pgbouncer_pidfile: /var/run/pgbouncer/pgbouncer.pid
+pgbouncer_listen_addr: '*'
+pgbouncer_listen_port: 6432
+pgbouncer_auth_type: md5
+pgbouncer_auth_file: /etc/pgbouncer/userlist.txt
+pgbouncer_max_client_conn: 10000
+pgbouncer_default_pool_size: 30

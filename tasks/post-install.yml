@@ -1,0 +1,14 @@
+# file: roles/install-pgbouncer/tasks/post-install.yml
+
+- name: "Stage 3: add logrotate configuration"
+  template:
+    src: pgbouncer.j2
+    dest: /etc/logrotate.d/pgbouncer
+    owner: root
+    group: root
+    mode: 0644
+  when: enable_logrotate
+
+- name: "Stage 3: reload logrotate"
+  command: logrotate -s /var/lib/logrotate.status /etc/logrotate.conf
+  when: enable_logrotate

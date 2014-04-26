@@ -1,0 +1,43 @@
+# file: roles/install-pgbouncer/tasks/configure.yml
+
+- name: "Stage 2: stop pgbouncer service"
+  service:
+    name: pgbouncer
+    state: stopped
+
+- name: "Stage 2: create pgbouncer.ini"
+  template:
+    src: pgbouncer.ini.j2
+    dest: "{{ pgbouncer_ini }}"
+    owner: "{{ pgbouncer_admin_user }}"
+    group: "{{ pgbouncer_admin_group }}"
+    mode: 0600
+
+- name: "Stage 2: remove old userlist.txt"
+  file: state=absent dest={{ pgbouncer_auth_file }}
+
+- name: "Stage 2: create new empty userlist.txt"
+  file: 
+    state: touch
+    dest: "{{ pgbouncer_auth_file }}"
+    owner: "{{ pgbouncer_admin_user }}"
+    group: "{{ pgbouncer_admin_group }}"
+    mode: 0660
+  
+- name: "Stage 2: add users into userlist.txt"
+  sudo: yes
+  sudo_user: postgres
+  shell: psql -qAtXF' ' -c "select rolname,rolpassword from pg_authid where rolname = '{{ item }}'" |sed -e 's/^/\"/' -e 's/$/\"/' -e 's/ /\" \"/' >> {{ pgbouncer_auth_file }}
+  with_items: pgbouncer_allowed_users
+
+- name: "Stage 2: fix permissions userlist.txt"
+  file: 
+    state: file
+    dest: "{{ pgbouncer_auth_file }}"
+    mode: 0600
+
+- name: "Stage 2: start pgbouncer"
+  service:
+    name: pgbouncer
+    state: started
+    enabled: yes
