@@ -1,5 +1,5 @@
 ---
 # Install Pgbouncer
-- hosts: staging
+- hosts: localhost
   roles:
     - { role: install-pgbouncer, sudo: yes, user: root, tags: [ 'install' ] }
