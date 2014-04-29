@@ -5,6 +5,6 @@
         sharedscripts
         create 0640 {{ pgbouncer_admin_user }} {{ pgbouncer_admin_group }}
         postrotate
-                /etc/init.d/pgbouncer -q reload
+                /etc/init.d/pgbouncer reload
         endscript
 }

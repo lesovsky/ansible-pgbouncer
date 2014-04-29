@@ -1,5 +1,9 @@
 ---
 # Install Pgbouncer
-- hosts: localhost
-  roles:
-    - { role: install-pgbouncer, sudo: yes, user: root, tags: [ 'install' ] }
+- hosts: all
+  sudo: yes
+  sudo_user: root
+  vars_files: 
+    - 'defaults/main.yml'
+  tasks:
+    - include: 'tasks/main.yml'
